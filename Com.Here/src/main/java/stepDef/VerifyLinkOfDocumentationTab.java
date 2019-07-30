@@ -29,7 +29,6 @@ public class VerifyLinkOfDocumentationTab
 	String url = "";
 	List<String> documentationTabLinks=new ArrayList<String>();
 	
-	
 	@Given("^I navigate to the application URL$")
 	public void i_navigate_to_the_application_URL()  
 	{
@@ -41,37 +40,22 @@ public class VerifyLinkOfDocumentationTab
 	@When("^I validate the internal links of Documentation tab$")
 	public void i_validate_the_internal_links_of_Documentation_tab()  
 	{	 
-		List<WebElement> links = driver.findElements(By.tagName("a"));
+		List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href,'/documentation#')]"));
 		System.out.println(links.size());
 		Iterator<WebElement> it = links.iterator();
 
 		while (it.hasNext()) 
 		{
 			url = it.next().getAttribute("href");
-
-			if (url == null || url.isEmpty()) 
-			{
-				System.out.println("URL is either not configured for anchor tag or it is empty : "+ url);
-				notRelToDocumentationTabLink++;
-				continue;
-			}
-			if (!url.startsWith(pageUrl)) 
-			{
-				System.out.println("URL belongs to another domain : "+ url );
-				notRelToDocumentationTabLink++;
-				continue;
-			}
-			else
-			{
-				documentationTabLinks.add(url);
-			}
+			documentationTabLinks.add(url);
 		}	
 
 	}
 	
-	@Then("^I check the page load and anglur is initialized for the links$")
-	public void i_check_the_page_load_and_anglur_is_initialized_for_the_links() 
+	@Then("^I wait to load the page and anglur is initialized$")
+	public void i_wait_to_load_the_page_and_anglur_is_initialized() 
 	{
+	 
 		for(int i=0;i<documentationTabLinks.size();i++)
 		{
 			if(documentationTabLinks.get(i).startsWith(pageUrl))
