@@ -37,7 +37,7 @@ public class VerifyStatusCodeOfLinks {
 	@When("^I find all the links present on the current webpage$")
 	public void i_find_all_the_links_present_on_the_current_webpage() 
 	{	 
-		allURLs = driver.findElements(By.tagName("a"));
+		allURLs = driver.findElements(By.xpath("//a[contains(@href,'/')]//following::a"));
 		System.out.println("size:" + allURLs.size());
 
 		
@@ -69,11 +69,17 @@ public class VerifyStatusCodeOfLinks {
 			}
 			if (respCode == 200) 
 			{
-				System.out.println(url);
+				System.out.println("Valid link:- "+ url);
 				++validLinks;
 			} 
+			else
+			{
+				System.out.println("Broken link:- "+ url);
+				brokenLinks++;
+			}
 		}
 		System.out.println("Total valid links found# " + validLinks);
+		System.out.println("Total broken links found#" + brokenLinks);
 
 	}
 
